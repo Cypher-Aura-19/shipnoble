@@ -1,0 +1,7 @@
+tools/out/
+__pycache__/
+*.pyc
+.impeccable/
+index.backup.html
+.vercel
+node_modules/

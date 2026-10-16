@@ -1,0 +1,242 @@
+/* ================= HOME · the truck story: drawing styles (shared by the page and the build previews) ================= */
+.st-svg{--st-ink:#071b33;--st-accent:#ff6a14;--st-accent-deep:#d9530a}
+.st-svg .st-white :is(.iso-fill,.iso-top,.iso-shade),
+.st-svg .st-curtain :is(.iso-fill,.iso-top,.iso-shade){fill:#fff}
+.st-svg .st-carton :is(.iso-fill,.iso-shade){fill:#f7f3ec}
+.st-svg .st-carton .iso-top{fill:#fbf9f5}
+.st-svg .st-inside :is(.iso-fill,.iso-top,.iso-shade){fill:#e7eaee}
+.st-svg .st-floor :is(.iso-fill,.iso-top,.iso-shade){fill:#d9dde2}
+.st-svg .st-wall :is(.iso-fill,.iso-top,.iso-shade){fill:#f6f7f8}
+.st-svg .st-yard :is(.iso-fill,.iso-shade){fill:#eceeef}
+.st-svg .st-yard .iso-top{fill:#f3f4f5}
+.st-svg .st-cut :is(.iso-fill,.iso-top,.iso-shade){fill:var(--st-ink)}
+.st-svg .st-cut .iso-edge{stroke:var(--st-ink)}
+.st-svg .st-earth :is(.iso-fill,.iso-top,.iso-shade){fill:#f1f2f4}
+.st-svg .st-door :is(.iso-fill,.iso-top,.iso-shade){fill:#c8ced6}
+.st-svg .st-drum :is(.iso-fill,.iso-top,.iso-shade){fill:#dfe3e8}
+.st-svg .st-glass :is(.iso-fill,.iso-top,.iso-shade){fill:#cfd8e1}
+.st-svg .st-glass-fill{fill:#cfd8e1}
+.st-svg .st-lamp :is(.iso-fill,.iso-top,.iso-shade){fill:#fff}
+.st-svg .st-stripe{fill:var(--st-accent)}
+.st-svg .st-strap{fill:none;stroke:var(--st-accent);stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
+.st-svg .st-word{fill:var(--st-ink);font-family:Geist,system-ui,sans-serif;font-weight:700;letter-spacing:.02em}
+.st-svg .st-hole{fill:var(--anatomy-lo)}
+.st-svg .st-roller{fill:#fff;stroke:var(--anatomy-mid);stroke-width:.6}
+.st-svg .st-hose{fill:none;stroke:var(--anatomy-mid);stroke-width:1.1;stroke-linecap:round}
+.st-svg .st-scan{fill:none;stroke:var(--st-accent);stroke-width:2;stroke-linecap:round}
+.st-svg image{image-rendering:auto}
+.st-svg .st-face{fill:#fff}
+.st-svg .st-cut .st-face{fill:var(--st-ink)}
+.st-svg .st-cut .iso-line{stroke:var(--st-ink)}
+.st-svg .st-earth .st-face{fill:#f1f2f4}
+.st-svg .st-door .st-face{fill:#c8ced6}
+
+/* ================= HOME · chapter 2: the dock (pinned) ================= */
+.sd{position:relative;background:#fff}
+.sd-pin{position:relative;height:100vh;height:100svh;overflow:hidden;background:#fff}
+.sd{--sd-stage-h:min(54svh,32vw);--sd-under:8svh}
+.sd-stage{position:absolute;left:0;right:0;bottom:var(--sd-under);height:var(--sd-stage-h);--anatomy-lit:var(--c-accent)}
+.sd-stage .st-svg{position:absolute;left:0;top:0;display:block;width:100%;height:100%;overflow:visible;transform-origin:0 0}
+.sd-band{position:absolute;left:0;right:0;bottom:0;height:0;background:var(--c-ink);transform:scaleY(0);transform-origin:50% 100%}
+.sd-copy{position:absolute;left:var(--grid-m);right:var(--grid-m);top:clamp(5.4rem,11vh,7.5rem);bottom:calc(var(--sd-stage-h) + var(--sd-under) + 1rem);pointer-events:none}
+.sd-panel{position:absolute;top:0;opacity:0;will-change:transform,opacity}
+.sd-panel--l{left:0;max-width:34rem}
+.sd-panel--r{right:0}
+.sd-panel[data-sd-panel="0"]{opacity:1}
+.sd-title{margin:0;font-size:clamp(2rem,3.5vw,3.5rem);font-weight:400;letter-spacing:-.045em;line-height:1.02;color:var(--c-ink)}
+.sd-text{margin:1.1rem 0 0;max-width:38ch;color:var(--c-dark-gray);font-size:1.0625rem;line-height:1.55}
+.sd-stats{display:grid;grid-template-columns:repeat(3,auto);gap:clamp(1.4rem,3vw,3.2rem);margin:0;padding-top:.4rem}
+.sd-stats div{display:flex;flex-direction:column-reverse;gap:.55rem}
+.sd-stats dt{font:600 .6875rem/1.2 var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--c-dark-gray)}
+.sd-stats dd{margin:0;font-size:clamp(2rem,3.4vw,3.4rem);letter-spacing:-.05em;line-height:1;color:var(--c-ink);font-variant-numeric:tabular-nums}
+.sd-count{text-align:right}
+.sd-count-n{margin:0;font-size:clamp(3rem,6vw,6rem);letter-spacing:-.06em;line-height:.9;color:var(--c-ink);font-variant-numeric:tabular-nums}
+.sd-count-n small{font-size:.38em;letter-spacing:-.02em;color:var(--c-dark-gray);margin-left:.15em}
+.sd-count-l{margin:.7rem 0 0;font:600 .6875rem/1 var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--c-dark-gray)}
+.sd-count-bar{display:grid;grid-template-columns:repeat(4,1.6rem);gap:.3rem;justify-content:end;margin-top:.9rem}
+.sd-count-bar i{height:3px;border-radius:2px;background:rgba(7,27,51,.12);transition:background-color .35s ease}
+.sd-count-bar i.is-on{background:var(--c-accent)}
+@media (max-width:767px){
+  .sd{--sd-stage-h:46svh;--sd-under:6svh}
+  .sd-copy{top:5.2rem}
+  .sd-panel--l,.sd-panel--r{left:0;right:0;max-width:none}
+  .sd-panel--r{top:auto;bottom:0}
+  .sd-title{font-size:clamp(1.75rem,8vw,2.4rem)}
+  .sd-text{font-size:.9375rem;margin-top:.7rem}
+  .sd-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem}
+  .sd-stats dd{font-size:1.6rem}
+  .sd-stats dt{font-size:.5625rem;letter-spacing:.08em}
+  .sd-count{text-align:left;display:flex;align-items:baseline;gap:1rem}
+  .sd-count-n{font-size:2.6rem}
+  .sd-count-l{margin:0}
+  .sd-count-bar{display:none}
+}
+
+/* ================= HOME · chapter 3: services on the navy road ================= */
+.sv{position:relative;background:var(--c-ink);color:#fff;padding:0 var(--grid-m) 6rem;overflow:hidden}
+.sv-marquee{position:relative;margin:0 calc(var(--grid-m) * -1);padding:2.4rem 0 1rem;pointer-events:none}
+.sv-track{display:flex;gap:4vw;white-space:nowrap;will-change:transform}
+.sv-track span{font-size:clamp(5rem,17vw,17rem);font-weight:600;letter-spacing:-.06em;line-height:.85;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.22)}
+.sv-inner{max-width:1400px;margin:0 auto}
+.sv-head{display:grid;gap:1rem;margin:3rem 0 3rem}
+.sv-title{margin:0;font-size:clamp(2.2rem,4vw,4rem);font-weight:400;letter-spacing:-.045em;line-height:1}
+.sv-sub{margin:0;max-width:44ch;color:rgba(255,255,255,.62);line-height:1.55}
+.sv-grid{list-style:none;margin:0;padding:0;display:grid;border-top:1px solid rgba(255,255,255,.14)}
+.sv-grid li{border-bottom:1px solid rgba(255,255,255,.14)}
+.sv-grid a{display:grid;grid-template-columns:5rem minmax(0,1fr) 2.6rem;grid-template-areas:"thumb name arrow" "thumb desc arrow";align-items:center;gap:.25rem 1.2rem;padding:1.2rem 0;color:#fff;text-decoration:none}
+.sv-thumb{grid-area:thumb;width:5rem;height:3.75rem;border-radius:10px;overflow:hidden;background:rgba(255,255,255,.06)}
+.sv-thumb img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.02);transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.sv-name{grid-area:name;font-size:clamp(1.25rem,1.9vw,1.75rem);letter-spacing:-.03em;line-height:1.15}
+.sv-desc{grid-area:desc;color:rgba(255,255,255,.58);font-size:.9375rem;line-height:1.45}
+.sv-arrow{grid-area:arrow;justify-self:end;display:grid;place-items:center;width:2.6rem;height:2.6rem;border-radius:50%;border:1px solid rgba(255,255,255,.2);transition:background-color .35s ease,border-color .35s ease,transform .5s cubic-bezier(.16,1,.3,1)}
+.sv-arrow svg{width:13px;height:13px}
+.sv-grid a:hover .sv-arrow,.sv-grid a:focus-visible .sv-arrow{background:var(--c-accent);border-color:var(--c-accent);transform:rotate(-45deg)}
+.sv-grid a:hover .sv-thumb img{transform:scale(1.1)}
+.sv-grid a:focus-visible{outline:2px solid var(--c-accent);outline-offset:4px;border-radius:8px}
+@media (min-width:1024px){
+  .sv{padding-bottom:9rem}
+  .sv-head{grid-template-columns:minmax(0,1fr) minmax(0,26rem);align-items:end;gap:3rem;margin:4rem 0 3.6rem}
+  .sv-grid{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:4rem}
+  .sv-grid a{grid-template-columns:6.5rem minmax(0,1fr) 2.8rem;padding:1.6rem 0}
+  .sv-thumb{width:6.5rem;height:4.6rem}
+}
+.st-svg .st-paper :is(.iso-fill,.iso-top,.iso-shade){fill:#f4f5f6}
+.st-svg .st-walk :is(.iso-fill,.iso-top,.iso-shade){fill:#fff}
+.st-svg .st-road :is(.iso-fill,.iso-top,.iso-shade){fill:#0d2542}
+.st-svg .st-road .iso-edge{stroke:#0d2542}
+.st-svg .st-mark :is(.iso-fill,.iso-top,.iso-shade){fill:rgba(255,255,255,.82)}
+.st-svg .st-mark .iso-edge{stroke:none}
+.st-svg .st-arrow{fill:rgba(255,255,255,.82)}
+.st-svg .st-tree .iso-fill{fill:#fff}
+.st-svg .st-shadow{fill:#061528;opacity:.22}
+.st-svg .st-bp-base{fill:#123056}
+.st-svg .st-bones .st-bp :is(.iso-fill,.iso-top,.iso-shade){fill:#16365e}
+.st-svg .st-bones .iso-line{stroke:rgba(255,255,255,.78)}
+.st-svg .st-bones .iso-dot{fill:#fff}
+.st-svg .st-bp-wire{fill:none;stroke:var(--st-accent);stroke-width:.9}
+.st-svg .st-crown{fill:#e9ecef}
+.st-svg .st-crown-lit{fill:#fff}
+.st-svg .st-paper-fill{fill:#f4f5f6}
+
+/* ================= HOME · chapter 4: the camera swing, the turn and the blueprint (pinned) ================= */
+.sa{position:relative;background:#f4f5f6}
+.sa-pin{position:relative;height:100vh;height:100svh;overflow:hidden;background:#f4f5f6}
+.sa-stage{position:absolute;inset:0;--anatomy-lit:var(--c-accent)}
+.sa-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.sa-stage .st-svg{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0}
+.sa-copy{position:absolute;inset:0;pointer-events:none}
+.sa-panel{position:absolute;opacity:0;will-change:transform,opacity}
+.sa-panel a{pointer-events:auto}
+.sa-panel--top{left:var(--grid-m);top:clamp(5.6rem,13vh,8rem);max-width:36rem;opacity:1}
+.sa-panel--l{left:var(--grid-m);top:50%;max-width:min(30rem,32vw);margin-top:-7rem}
+.sa-panel--r{right:var(--grid-m);top:50%;width:min(24rem,28vw);margin-top:-8rem}
+.sa-title{margin:0;font-size:clamp(2rem,3.5vw,3.5rem);font-weight:400;letter-spacing:-.045em;line-height:1.02;color:var(--c-ink)}
+.sa-text{margin:1.1rem 0 0;max-width:38ch;color:var(--c-dark-gray);font-size:1.0625rem;line-height:1.55}
+.sa-link{display:inline-flex;align-items:center;gap:.6rem;margin-top:1.8rem;color:var(--c-ink);text-decoration:none;font-weight:500;border-bottom:1px solid var(--c-ink);padding-bottom:.25rem}
+.sa-link svg{width:13px;height:13px;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.sa-link:hover svg{transform:translateX(4px)}
+.sa-list{list-style:none;margin:0;padding:0}
+.sa-list li{display:grid;gap:.3rem;padding:1.15rem 0;border-top:1px solid rgba(7,27,51,.12)}
+.sa-list li:last-child{border-bottom:1px solid rgba(7,27,51,.12)}
+.sa-list b{font-weight:500;color:var(--c-ink);font-size:1.0625rem}
+.sa-list span{color:var(--c-dark-gray);line-height:1.5;font-size:.9375rem}
+.sa-list li:before{content:"";display:block;width:1.6rem;height:2px;background:var(--c-accent);margin-bottom:.5rem}
+@media (max-width:767px){
+  .sa-panel--top{top:5.2rem;right:var(--grid-m)}
+  .sa-panel--l{top:5.2rem;margin:0;right:var(--grid-m);max-width:none}
+  .sa-panel--r{top:auto;bottom:1.2rem;left:var(--grid-m);right:var(--grid-m);width:auto;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem}
+  .sa-panel--l .sa-text{font-size:.9375rem;margin-top:.6rem}
+  .sa-panel--l .sa-link{margin-top:.9rem}
+  .sa-list li{padding:.6rem 0;border:0}
+  .sa-list li:last-child{border:0}
+  .sa-list span{display:none}
+  .sa-list b{font-size:.8125rem;line-height:1.25}
+  .sa-title{font-size:clamp(1.75rem,8vw,2.4rem)}
+}
+@media (max-width:767px){
+  .sa-panel--l,.sa-panel--top{left:.75rem;right:.75rem;padding:1rem 1.1rem;border-radius:16px;background:rgba(244,245,246,.96)}
+  .sa-panel--r{left:.75rem;right:.75rem;bottom:.75rem;padding:.4rem 1.1rem;border-radius:16px;background:rgba(244,245,246,.96)}
+}
+.st-svg .st-scan{filter:drop-shadow(0 0 5px rgba(255,106,20,.9)) drop-shadow(0 0 14px rgba(255,106,20,.45))}
+.st-svg .st-verge :is(.iso-fill,.iso-top,.iso-shade){fill:#eaeef0}
+.st-svg .st-lot :is(.iso-fill,.iso-top,.iso-shade){fill:#e7e9ed}
+/* chapter 4: copy sizing that keeps clear of the road, and a soft paper wash behind the opening line */
+@media (min-width:768px){
+  .sa-panel--l{max-width:min(26rem,28vw)}
+  .sa-panel--l .sa-title{font-size:clamp(1.9rem,2.7vw,3rem)}
+  .sa-panel--r{width:min(22rem,25vw)}
+  .sa-panel--top:before{content:"";position:absolute;z-index:-1;left:-40vw;right:-6rem;top:-4rem;bottom:-3rem;background:radial-gradient(70% 80% at 35% 45%,rgba(244,245,246,.96) 40%,rgba(244,245,246,0) 100%);pointer-events:none}
+}
+.st-svg .st-arm{fill:none;stroke:var(--anatomy-mid);stroke-width:1.2;stroke-linecap:round}
+/* chapter 4: copy sizing that keeps clear of the road, and a soft paper wash behind the opening line */
+@media (min-width:768px){
+  .sa-panel--l{max-width:min(25rem,27vw)}
+  .sa-panel--l .sa-title{font-size:clamp(1.9rem,2.6vw,3rem)}
+  .sa-panel--r{width:min(21rem,24vw)}
+  .sa-panel--top:before{content:"";position:absolute;z-index:-1;left:-40vw;right:-6rem;top:-4rem;bottom:-3rem;background:radial-gradient(70% 80% at 35% 45%,rgba(244,245,246,.96) 40%,rgba(244,245,246,0) 100%);pointer-events:none}
+}
+
+/* chapter 4: the two sides of the blueprint, vertically centred and matched */
+.sa-eyebrow{display:inline-flex;align-items:center;gap:.55rem;margin:0 0 1.1rem;font:600 .6875rem/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--c-dark-gray)}
+.sa-eyebrow:before{content:"";width:.45rem;height:.45rem;border-radius:50%;background:var(--c-accent);box-shadow:0 0 0 4px rgba(255,106,20,.15)}
+.sa-list li:before{content:none}
+.sa-list li{display:grid;grid-template-columns:auto 1fr;gap:.9rem;align-items:start}
+.sa-list i{width:.55rem;height:.55rem;margin-top:.42rem;border-radius:50%;background:var(--c-accent);box-shadow:0 0 0 4px rgba(255,106,20,.14)}
+.sa-list div{display:grid;gap:.3rem}
+@media (min-width:768px){
+  .sa-panel--l,.sa-panel--r{top:0;bottom:0;margin:0;display:flex;align-items:center}
+  .sa-panel--l{left:var(--grid-m);width:min(25rem,27vw);max-width:none}
+  .sa-panel--r{right:var(--grid-m);left:auto;width:min(22rem,25vw)}
+  .sa-side .sa-text{font-size:1rem}
+  .sa-list{width:100%;padding:.4rem 1.5rem;border-radius:20px;background:rgba(255,255,255,.97);border:1px solid rgba(7,27,51,.08);box-shadow:0 30px 60px -40px rgba(7,27,51,.35)}
+  .sa-list li{padding:1.15rem 0;border:0;border-top:1px solid rgba(7,27,51,.08)}
+  .sa-list li:first-child{border-top:0}
+  .sa-list li:last-child{border-bottom:0}
+}
+@media (max-width:767px){
+  .sa-panel--l{top:5.2rem;bottom:auto}
+  .sa-panel--l .sa-eyebrow{margin-bottom:.6rem}
+  .sa-panel--r{top:auto;bottom:.75rem;left:.75rem;right:.75rem;width:auto;display:block}
+  .sa-panel--r .sa-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem}
+  .sa-panel--r .sa-list li{grid-template-columns:1fr;gap:.4rem;padding:.6rem 0}
+  .sa-panel--r .sa-list i{margin:0}
+}
+
+/* chapter 4: the grid and travelling light either side of the road */
+.sa-fx{position:absolute;top:0;bottom:0;pointer-events:none;opacity:0;visibility:hidden}
+.sa-fx--l{left:0;right:calc(50% + var(--road-half,220px) + 1rem)}
+.sa-fx--r{right:0;left:calc(50% + var(--road-half,220px) + 1rem)}
+.sa-fx .fx-grid{-webkit-mask-image:radial-gradient(85% 75% at 50% 50%,#000 35%,transparent 85%);mask-image:radial-gradient(85% 75% at 50% 50%,#000 35%,transparent 85%)}
+@media (max-width:767px){.sa-fx{display:none}}
+/* the right side: the capabilities as a plain, quiet list (no card) */
+@media (min-width:768px){
+  .sa-list{padding:0;border-radius:0;background:none;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .sa-list li{padding:1.1rem 0;border-top:1px solid rgba(7,27,51,.1)}
+  .sa-list li:first-child{border-top:1px solid rgba(7,27,51,.1)}
+  .sa-list li:last-child{border-bottom:1px solid rgba(7,27,51,.1)}
+}
+
+/* ================= services: a quiet wordmark like the footer, six cards with their own grid and light ================= */
+.sv-wordmark{position:relative;z-index:1;margin:0 auto;padding-top:clamp(3rem,6vw,5rem);max-width:1480px;font-size:min(15.6vw,250px);font-weight:700;letter-spacing:-.06em;line-height:.78;white-space:nowrap;user-select:none;text-align:center;pointer-events:none}
+.sv-wordmark span{display:inline-block;padding:0 .08em 0 .02em;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 88%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sv-wordmark .sv-wordmark-glow{position:absolute;left:50%;transform:translateX(-50%);bottom:0;background:linear-gradient(100deg,transparent 35%,rgba(255,106,20,.9) 50%,transparent 65%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;-webkit-mask-image:linear-gradient(180deg,#000 10%,transparent 92%);mask-image:linear-gradient(180deg,#000 10%,transparent 92%);animation:sweep 7s cubic-bezier(.65,0,.35,1) infinite}
+@media (prefers-reduced-motion:reduce){.sv-wordmark .sv-wordmark-glow{animation:none;opacity:0}}
+.sv-grid{display:grid;gap:1rem;border:0}
+.sv-grid li{border:0}
+.sv-grid a.sv-card{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:flex-start;text-align:left;justify-content:flex-start;gap:0;min-height:15.5rem;padding:1.4rem;border-radius:22px;overflow:hidden;background:linear-gradient(160deg,#0f2b4c 0%,#0a2038 100%);border:1px solid rgba(255,255,255,.08);transition:transform .6s cubic-bezier(.16,1,.3,1),border-color .4s ease,box-shadow .6s cubic-bezier(.16,1,.3,1)}
+.sv-card>.fx-grid{position:absolute;inset:0;z-index:-1;opacity:.85;-webkit-mask-image:radial-gradient(110% 90% at 85% 0%,#000 25%,transparent 75%);mask-image:radial-gradient(110% 90% at 85% 0%,#000 25%,transparent 75%);transition:opacity .5s ease}
+.sv-card>.fx-lines{z-index:-1}
+.sv-card:after{content:"";position:absolute;z-index:-1;right:-20%;top:-40%;width:70%;height:90%;background:radial-gradient(closest-side,rgba(255,106,20,.22),transparent);opacity:0;transition:opacity .6s ease}
+.sv-grid a.sv-card:hover{transform:translateY(-4px);border-color:rgba(255,106,20,.45);box-shadow:0 30px 60px -35px rgba(0,0,0,.6)}
+.sv-card:hover:after{opacity:1}
+.sv-card:hover>.fx-grid{opacity:1}
+.sv-card .sv-thumb{width:4.6rem;height:3.4rem;border-radius:12px;border:1px solid rgba(255,255,255,.12)}
+.sv-card .sv-arrow{position:absolute;top:1.4rem;right:1.4rem}
+.sv-card .sv-name{display:block;margin-top:auto;font-size:clamp(1.3rem,1.7vw,1.6rem)}
+.sv-card .sv-desc{display:block;margin-top:.45rem;max-width:30ch}
+.sv-card .sv-name,.sv-card .sv-desc{position:relative}
+@media (min-width:768px){.sv-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1100px){.sv-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.2rem}.sv-grid a.sv-card{min-height:17rem;padding:1.7rem}.sv-card .sv-arrow{top:1.7rem;right:1.7rem}}
+
+/* night lights: only in the dark theme (theme-dark.css shows them) */
+.nt{display:none}

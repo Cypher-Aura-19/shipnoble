@@ -1,0 +1,128 @@
+/* ShipNoble at night: deep navy page, navy-grey surfaces, light text, a brighter orange that carries on navy */
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --c-accent:#ff7a2b;--c-accent-rgb:255,122,43;
+  --c-ink:#e8edf3;--c-ink-deep:#101c2f;
+  --c-ink-05:rgba(232,237,243,.06);--c-ink-15:rgba(232,237,243,.16);
+  --c-white:#0b1424;--c-paper:#0d1727;
+  --c-gray:#b8c2cf;--c-dark-gray:#9aa6b5;--c-light-gray:#56657b;--c-light-light-gray:#2b3a50;--c-line:rgba(232,237,243,.1);
+  --c-steel:#5b8fd9;
+}
+:root[data-theme="dark"],:root[data-theme="dark"] body{background:#0b1424;color:#e8edf3}
+
+/* the illustration kit: navy-grey solids, light edges, orange stays the moving part */
+:root[data-theme="dark"] .iso,:root[data-theme="dark"] .iso[data-theme="light"],:root[data-theme="dark"] .st-svg{
+  --anatomy-page:#0b1424;--anatomy-card:#0f1a2b;--anatomy-text:#9aa6b5;--anatomy-strong:#e8edf3;--anatomy-muted:#6b7889;
+  --anatomy-paper:#16243a;--anatomy-face:#1a2a43;--anatomy-top:#203252;
+  --anatomy-shade-0:#0f1a2c;--anatomy-shade-1:#121f33;--anatomy-shade-2:#15233a;--anatomy-shade-3:#182841;
+  --anatomy-lit-top:#25395b;--anatomy-lit-shade:#1d2e4a;
+  --anatomy-hi:#c9d4e2;--anatomy-mid:#71839c;--anatomy-lo:#41526b;--anatomy-faint:#26364e;
+  --anatomy-halo:#03070d;--anatomy-halo-opacity:.55;--anatomy-dot:#c9d4e2;
+  --st-ink:#060d18;--st-accent:#ff7a2b;--st-accent-deep:#e2611a;
+}
+:root[data-theme="dark"] .st-svg .st-word{fill:#e8edf3}
+:root[data-theme="dark"] .st-svg .st-white :is(.iso-fill,.iso-top,.iso-shade),:root[data-theme="dark"] .st-svg .st-curtain :is(.iso-fill,.iso-top,.iso-shade){fill:#1c2d47}
+:root[data-theme="dark"] .floor.is-scene .floor-fig{background:#0d1727;border-color:rgba(232,237,243,.07)}
+/* the service-page scene sits straight on the page, as in daylight: no panel, edge or shadow around it */
+:root[data-theme="dark"] .floor.is-scene .floor-stage{border:0;background:none;box-shadow:none}
+/* how it works: cards one step lighter than the page, a faint rail, rings on the page colour */
+:root[data-theme="dark"] .proc-card{background:#0d1727;border-color:rgba(232,237,243,.07)}
+:root[data-theme="dark"] .pm .pm-acc :is(.iso-fill,.iso-top){fill:#1c2d47}
+:root[data-theme="dark"] .pm .pm-acc .iso-shade{fill:#22324a}
+:root[data-theme="dark"] .pm .pm-acc :is(.iso-edge,.iso-line){stroke:#ff7a2b}
+:root[data-theme="dark"] .pm .pm-hole{fill:#0a1220}
+:root[data-theme="dark"] .pm .pm-screen :is(.iso-fill,.iso-top,.iso-shade){fill:#16243a}
+:root[data-theme="dark"] .pm .pm-ui{fill:#3a4c66}
+:root[data-theme="dark"] .pm .pm-sign-line{stroke:#4a5d78}
+:root[data-theme="dark"] .pm .pm-flash{fill:#ffe9cf}
+:root[data-theme="dark"] .pm :is(.pm-route,.pm-tape,.pm-sign,.pm-bracket){stroke:#ff7a2b}
+:root[data-theme="dark"] .pm :is(.pm-pin,.pm-check-bg){fill:#ff7a2b}
+:root[data-theme="dark"] .pm .pm-hole-box :is(.iso-fill,.iso-top,.iso-shade){fill:#0a1220}
+:root[data-theme="dark"] .pm .pm-therm :is(.iso-fill,.iso-top,.iso-shade){fill:#3a5a86}
+:root[data-theme="dark"] .pm :is(.pm-map,.pm-link){stroke:#3a4c66}
+:root[data-theme="dark"] .pm .pm-paper{fill:#1c2d47;stroke:#3a4c66}
+:root[data-theme="dark"] .pm :is(.pm-btn,.pm-row,.pm-bar,.pm-led){fill:#ff7a2b}
+:root[data-theme="dark"] .pm .pm-slot :is(.iso-fill,.iso-top,.iso-shade){fill:#ff7a2b}
+:root[data-theme="dark"] .pm :is(.pm-route-s,.pm-wrap,.pm-stamp){stroke:#ff7a2b}
+:root[data-theme="dark"] .pm .pm-stamp-t{fill:#ff7a2b}
+:root[data-theme="dark"] .pm .pm-beam{fill:rgba(255,122,43,.3)}
+:root[data-theme="dark"] .pm .pm-banner{fill:#1c2d47;stroke:#ff7a2b}
+:root[data-theme="dark"] .pm .pm-banner-ck{stroke:#ff7a2b}
+:root[data-theme="dark"] .pm .pm-banner-t{fill:#3a4c66}
+:root[data-theme="dark"] .proc-rail{background:rgba(232,237,243,.12)}
+:root[data-theme="dark"] .proc-ring{border-color:rgba(232,237,243,.26);background:#0b1424}
+:root[data-theme="dark"] .proc-step.is-on .proc-ring{border-color:#ff7a2b;box-shadow:0 0 0 5px rgba(255,122,43,.16)}
+:root[data-theme="dark"] .proc-sub{color:#93a3b8}
+/* the step drawings keep their light lines at night (the generator would darken them) */
+:root[data-theme="dark"] .pa .l,:root[data-theme="dark"] .pa .k{stroke:#e8eef6}
+:root[data-theme="dark"] .pa .d,:root[data-theme="dark"] .pa .kd{stroke:rgba(232,238,246,.38)}
+:root[data-theme="dark"] .pa .g{stroke:rgba(232,238,246,.45)}
+:root[data-theme="dark"] .pa .k,:root[data-theme="dark"] .pa .kd{fill:#142238}
+:root[data-theme="dark"] .pa .a{stroke:#ff7a2b}
+:root[data-theme="dark"] .pa .af{fill:#ff7a2b}
+
+/* buttons: the navy button turns light at night; ghost buttons get a light hairline */
+:root[data-theme="dark"] .btn--dark{background:#e8edf3;color:#071b33}
+:root[data-theme="dark"] .btn--dark .btn-icon{background:#071b33;color:#fff}
+:root[data-theme="dark"] .btn--dark:hover{background:#fff}
+
+/* logos on the client strip: light marks on navy */
+:root[data-theme="dark"] .logo-grid .cell img,:root[data-theme="dark"] [class*="logo"] img.is-mono{filter:brightness(0) invert(1) opacity(.55)}
+
+/* the loader and the page transition: navy halves, a light wordmark */
+:root[data-theme="dark"] .app-loader .half-mask,:root[data-theme="dark"] .page-wipe .pw-half{background:#0b1424}
+:root[data-theme="dark"] .animated-logo .text{color:#e8edf3}
+
+/* the theme switch */
+.theme-btn{position:relative;display:grid;place-items:center;width:2.75rem;height:2.75rem;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#fff;cursor:pointer;transition:background-color .3s var(--ease-out),border-color .3s var(--ease-out)}
+.theme-btn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22)}
+.theme-btn:focus-visible{outline:2px solid var(--c-accent);outline-offset:2px}
+.theme-btn svg{position:absolute;width:1.05rem;height:1.05rem;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:transform .6s cubic-bezier(.19,1,.22,1),opacity .35s var(--ease-out)}
+.theme-btn .i-moon{transform:rotate(-40deg) scale(.6);opacity:0}
+:root[data-theme="dark"] .theme-btn .i-sun{transform:rotate(60deg) scale(.6);opacity:0}
+:root[data-theme="dark"] .theme-btn .i-moon{transform:none;opacity:1}
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+
+/* the hero hands over to the page in navy, not white */
+:root[data-theme="dark"] .stage__fade{background:linear-gradient(to bottom,rgba(11,20,36,0) 0%,rgba(11,20,36,.6) 42%,#0b1424 82%)}
+
+/* the map at night: the same streets, inverted into navy */
+:root[data-theme="dark"] .visit-map iframe{filter:grayscale(1) invert(.92) hue-rotate(180deg) brightness(.85) contrast(.92)}
+:root[data-theme="dark"] .visit-map{background:#101b2d}
+:root[data-theme="dark"] .visit-tint{background:linear-gradient(90deg,rgba(4,9,18,.6),rgba(4,9,18,.05) 55%)}
+
+/* the switch inside the menu (phones): a row with a small toggle track */
+.np-theme{display:none;align-items:center;gap:.75rem;width:100%;margin:.4rem 0 1rem;padding:.8rem .9rem;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#fff;font:500 .9375rem/1 var(--font-primary);cursor:pointer;text-align:left}
+.np-theme-ic{position:relative;display:grid;place-items:center;width:1.2rem;height:1.2rem}
+.np-theme-ic svg{position:absolute;width:1.05rem;height:1.05rem;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:transform .6s cubic-bezier(.19,1,.22,1),opacity .35s var(--ease-out)}
+.np-theme .i-moon{transform:rotate(-40deg) scale(.6);opacity:0}
+:root[data-theme="dark"] .np-theme .i-sun{transform:rotate(60deg) scale(.6);opacity:0}
+:root[data-theme="dark"] .np-theme .i-moon{transform:none;opacity:1}
+.np-theme-t{flex:1}
+.np-theme-sw{position:relative;width:2.4rem;height:1.4rem;border-radius:999px;background:rgba(255,255,255,.16);transition:background-color .35s var(--ease-out)}
+.np-theme-sw i{position:absolute;left:.2rem;top:.2rem;width:1rem;height:1rem;border-radius:50%;background:#fff;transition:transform .45s cubic-bezier(.19,1,.22,1)}
+:root[data-theme="dark"] .np-theme-sw{background:var(--c-accent)}
+:root[data-theme="dark"] .np-theme-sw i{transform:translateX(1rem)}
+.np-theme:focus-visible{outline:2px solid var(--c-accent);outline-offset:2px}
+@media (max-width:480px){.nav-right .theme-btn{display:none}.np-theme{display:flex}}
+
+/* ---------- night lights in the illustrations ---------- */
+.nt{display:none}
+:root[data-theme="dark"] .nt{display:inline}
+/* cleaner at night: soft grey-blue edges, so shapes read by their fill and the lights stand out */
+:root[data-theme="dark"] .iso,:root[data-theme="dark"] .iso[data-theme="light"],:root[data-theme="dark"] .st-svg{--anatomy-hi:#8d9fb8;--anatomy-mid:#566881;--anatomy-lo:#36475f;--anatomy-faint:#223147}
+/* lit windows (a few left dark), lit lamp lenses */
+:root[data-theme="dark"] .st-svg .st-glass.nt-win :is(.iso-fill,.iso-top,.iso-shade),:root[data-theme="dark"] .nt-win :is(.iso-fill,.iso-top,.iso-shade){fill:#f2a65e}
+:root[data-theme="dark"] .st-svg .st-glass.nt-win.nt-dim :is(.iso-fill,.iso-top,.iso-shade),:root[data-theme="dark"] .nt-win.nt-dim :is(.iso-fill,.iso-top,.iso-shade){fill:#24344b}
+:root[data-theme="dark"] .st-svg .nt-win .iso-edge{stroke:#d08e52}
+:root[data-theme="dark"] .st-svg .nt-win.nt-dim .iso-edge{stroke:var(--anatomy-lo)}
+:root[data-theme="dark"] .st-svg .nt-win + .iso-line,:root[data-theme="dark"] .st-svg .nt-win ~ .iso-line{stroke:#b9783e}
+:root[data-theme="dark"] .st-svg .st-lamp :is(.iso-fill,.iso-top,.iso-shade){fill:#fff4dc}
+
+/* the navbar and its menu sit above the page at night, as the navy bar does on white by day */
+:root[data-theme="dark"] .nav-bg{background:#1a2a42;box-shadow:0 18px 40px -24px rgba(0,0,0,.7)}
+:root[data-theme="dark"] .np-card{background:rgba(255,255,255,.05)}
+:root[data-theme="dark"] .nav-right .btn--ghost{border-color:rgba(232,237,243,.16)}
+
+/* the LMS capability list is a plain list with hairlines, as in daylight (no card around it) */
+@media (min-width:768px){:root[data-theme="dark"] .sa-list{background:none;border:0;box-shadow:none;padding:0}}
