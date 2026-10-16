@@ -5,3 +5,6 @@ __pycache__/
 index.backup.html
 .vercel
 node_modules/
+
+.vercel
+.env*

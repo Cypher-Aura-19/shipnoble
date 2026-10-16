@@ -202,7 +202,8 @@ class GridCanvas {
     if (e.orientation === 'vertical') { ctx.rotate(Math.PI * .5); ctx.translate(0, -1); }
     if (e.direction === -1) ctx.rotate(Math.PI);
     ctx.globalAlpha = e.opacity;
-    ctx.drawImage(BLOB, -160 * .5, -110 * .5, 160, 110);
+    const gs = Math.max(0.45, Math.min(1, innerWidth / 1280));
+    ctx.drawImage(BLOB, -160 * .5 * gs, -110 * .5 * gs, 160 * gs, 110 * gs);
     ctx.fillStyle = inkNow(); ctx.fillRect(-115 * .15, e.direction === 1 ? 0 : -1, 115 * .15, 1);
     ctx.restore();
   }
@@ -329,7 +330,10 @@ class PathBackground {
     this.items = layoutPoints(this.layout, w, h, this.el).map(pts => {
       const d = roundedPath(pts);
       const blur = document.createElementNS(SVGNS, 'image');
-      blur.setAttribute('href', glowSprite(this.glow === ACCENT ? '#ff9a5c' : this.glow, .6 * this.shapeOpacity)); blur.setAttribute('width', 275); blur.setAttribute('height', 209); blur.setAttribute('x', -60); blur.setAttribute('y', -60);
+      // the glow is sized for desktop; on small screens it shrinks with the viewport (and fades a little) so it stays a
+      // soft light running along the line, never a big blob over the text
+      const gs = Math.max(0.42, Math.min(1, innerWidth / 1280)), ga = innerWidth < 768 ? 0.7 : 1;
+      blur.setAttribute('href', glowSprite(this.glow === ACCENT ? '#ff9a5c' : this.glow, .6 * this.shapeOpacity * ga)); blur.setAttribute('width', 275 * gs); blur.setAttribute('height', 209 * gs); blur.setAttribute('x', -60 * gs); blur.setAttribute('y', -60 * gs);
       const full = document.createElementNS(SVGNS, 'path');
       full.setAttribute('d', d); full.setAttribute('stroke', this.stroke); full.setAttribute('fill', 'none'); full.setAttribute('stroke-opacity', this.strokeOpacity); full.setAttribute('stroke-width', '1');
       const part = document.createElementNS(SVGNS, 'path');
