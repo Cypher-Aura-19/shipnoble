@@ -1,0 +1,6 @@
+tools/
+docs/
+plan/
+.impeccable/
+index.backup.html
+__pycache__/
