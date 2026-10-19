@@ -226,3 +226,11 @@ main.svc .btn--accent:hover{background:var(--a-hover)}
 @media (max-width:899px){.svh-title{font-size:clamp(3rem,15vw,6rem)}}
 
 
+
+/* ---------- responsive: tiles never grow wider than the screen; the channel tags drop to one column when the tile is narrow ---------- */
+@media (max-width:767px){.spec-bento{grid-template-columns:minmax(0,1fr)}}
+.spec-tile{min-width:0}
+.spec-tags{grid-template-columns:repeat(auto-fit,minmax(min(100%,7.4rem),1fr))}
+.spec-tags li{min-width:0;overflow-wrap:break-word}
+@media (min-width:1024px){.spec-tags li{font-size:.9375rem;padding:.85rem .75rem}}
+@media (max-width:399px){.spec-tags li{font-size:.9375rem;padding:.85rem .8rem}}

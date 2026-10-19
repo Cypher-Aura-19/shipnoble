@@ -12,7 +12,8 @@ const easeOut = (t) => 1 - (1 - t) ** 3;
 const easeIn = (t) => t * t;
 const NS = 'http://www.w3.org/2000/svg';
 const fx = (v) => v.toFixed(2);
-const PHONE = matchMedia('(max-width: 767px)');
+// phones, and tablets held upright, zoom in and follow the action
+const PHONE = matchMedia('(max-width: 767px), (min-width: 768px) and (max-width: 1100px) and (orientation: portrait)');
 
 // a follower: renders the eased value toward the scroll target, stops when settled
 function follower(render, tau = 0.18) {
@@ -129,8 +130,9 @@ if (dock) Promise.all([
     const r = stage.getBoundingClientRect();
     if (!r.width || !r.height) return;
     viewW = r.width; viewH = r.height;
-    zoom = PHONE.matches ? 2.1 : 1;
     scale = Math.min(viewW / F.vb[0], viewH / F.vb[1]);
+    // as close as 2.1×, but never taller than the stage
+    zoom = PHONE.matches ? Math.max(1.01, Math.min(2.1, (viewH * 0.95) / (F.vb[1] * scale))) : 1;
     offX = (viewW - F.vb[0] * scale) / 2;
     // the navy road rises to the front edge of the yard
     bandH = parseFloat(getComputedStyle(stage).bottom) + (F.vb[1] - F.ground) * scale * zoom;

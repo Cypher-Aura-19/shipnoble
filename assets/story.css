@@ -240,3 +240,43 @@
 
 /* night lights: only in the dark theme (theme-dark.css shows them) */
 .nt{display:none}
+
+/* ================= responsive: tablets held upright take the phone layout; short landscape screens shrink the copy ================= */
+@media (min-width:768px) and (max-width:1100px) and (orientation:portrait){
+  .sd{--sd-stage-h:46svh;--sd-under:6svh}
+  .sd-copy{top:6rem}
+  .sd-panel--l,.sd-panel--r{left:0;right:0;max-width:none}
+  .sd-panel--r{top:auto;bottom:0}
+  .sd-text{max-width:46ch}
+  .sd-stats{grid-template-columns:repeat(3,auto);justify-content:start;gap:3rem}
+  .sd-count{text-align:left;display:flex;align-items:baseline;gap:1.4rem}
+  .sd-count-l{margin:0}
+  .sd-count-bar{display:none}
+}
+@media (orientation:landscape) and (max-height:760px){
+  .sd{--sd-stage-h:min(50svh,32vw)}
+  .sd-title,.sa-panel--top .sa-title{font-size:clamp(1.5rem,2.6vw,2.4rem)}
+  .sd-text,.sa-panel--top .sa-text{font-size:.9375rem;max-width:46ch;margin-top:.7rem}
+  .sd-stats dd{font-size:clamp(1.6rem,2.8vw,2.6rem)}
+  .sd-count-n{font-size:clamp(2.4rem,4.6vw,4.4rem)}
+}
+@media (orientation:landscape) and (max-height:480px){
+  .sd{--sd-stage-h:44svh;--sd-under:3svh}
+  .sd-copy{top:4.75rem;bottom:calc(var(--sd-stage-h) + var(--sd-under) + .6rem)}
+  .sd-title,.sa-panel--top .sa-title{font-size:1.4rem}
+  .sd-text,.sa-panel--top .sa-text{font-size:.8125rem;line-height:1.45;max-width:52ch;margin-top:.45rem}
+  .sd-stats{gap:1.6rem;padding-top:0}
+  .sd-stats dd{font-size:1.5rem}
+  .sd-stats dt{font-size:.5625rem}
+  .sd-count-n{font-size:2.2rem}
+  .sd-count-l{margin-top:.4rem}
+  .sd-count-bar{margin-top:.5rem}
+  .sa-panel--top{top:4.6rem}
+  .sa-panel--l .sa-title{font-size:1.4rem}
+  .sa-panel--l .sa-text{font-size:.8125rem;margin-top:.5rem}
+  .sa-panel--l .sa-link{margin-top:.8rem}
+  .sa-eyebrow{margin-bottom:.6rem}
+  .sa-list li{padding:.55rem 0}
+  .sa-list b{font-size:.875rem}
+  .sa-list span{font-size:.75rem;line-height:1.35}
+}

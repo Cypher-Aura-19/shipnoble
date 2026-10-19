@@ -590,6 +590,8 @@ addEventListener('pointermove', e => {
 const nav = document.querySelector('[data-nav]');
 const navShell = nav.querySelector('.nav-shell'), navBg = nav.querySelector('.nav-bg'), navRow = nav.querySelector('.nav-row');
 const navPanel = nav.querySelector('.nav-panel'), navBtn = nav.querySelector('.nav-menu-btn');
+// the open panel scrolls on its own when it is taller than a short screen (Lenis is stopped while it is open)
+navPanel.setAttribute('data-lenis-prevent', '');
 const ROW_H = () => navRow.offsetHeight, ROW_W = () => Math.min(736, navShell.offsetWidth);
 const closedClip = () => { const x = (navShell.offsetWidth - ROW_W()) / 2; return `inset(0px ${x}px ${navShell.offsetHeight - ROW_H()}px ${x}px round 8px)`; };
 const openClip = () => 'inset(0px 0px 0px 0px round 12px)';
