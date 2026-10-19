@@ -1,9 +1,9 @@
 // Home hero: the freight-journey scene (inside the cab → out through the window → the hills fade into the page).
 // Ported from cargo/freight-journey/web. It runs on the site's own GSAP, ScrollTrigger and Lenis (site.js).
-import { LAYERS, TIMELINE } from './config.js?v=5';
-import { createRenderer } from './render/renderer.js?v=5';
-import { createGLRenderer } from './render/renderer-gl.js?v=5';
-import { createJourney } from './scene/journey.js?v=5';
+import { LAYERS, PORTRAIT, TIMELINE } from './config.js?v=6';
+import { createRenderer } from './render/renderer.js?v=6';
+import { createGLRenderer } from './render/renderer-gl.js?v=6';
+import { createJourney } from './scene/journey.js?v=6';
 
 const { gsap } = window;
 const journeyEl = document.querySelector('[data-journey]');
@@ -42,6 +42,10 @@ function initCopy() {
     .to('[data-fade]', { opacity: 1, duration: 1 - T.fadeStart }, T.fadeStart);
   tl.set({}, {}, 1);
 }
+
+// the portrait and landscape cabs are different pictures: turning the screen across the line loads the other set
+let orientTimer = 0;
+addEventListener('resize', () => { clearTimeout(orientTimer); orientTimer = setTimeout(() => { if ((innerWidth < innerHeight) !== PORTRAIT) location.reload(); }, 400); });
 
 async function boot() {
   if (!journeyEl) return;

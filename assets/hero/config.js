@@ -115,3 +115,17 @@ export const PHYSICS = {
 
 // Dust floating in the sunlit cab (layer 'dust' above).
 export const DUST = { count: 46 };
+
+// Portrait screens (phones, tablets held upright) get their own cab: a 1440 × 2560 frame whose window fits the screen width,
+// so the whole window is shown instead of a crop of it. The world layers are lowered to sit behind the new window, with the
+// horizon (and so the projection centre) where the road meets the guardrail at the same distance above the sill as on desktop.
+export const PORTRAIT = window.innerWidth < window.innerHeight;
+if (PORTRAIT) {
+  Object.assign(FRAME, { w: 1440, h: 2560, cx: 720, cy: 1112 });
+  Object.assign(WINDOW, { x0: 90, y0: 779, x1: 1350, y1: 1569 });
+  const dy = FRAME.cy - 720;
+  for (const l of LAYERS) {
+    if (l.id === 'hills' || l.id === 'guardrail') l.y += dy;
+    if (l.id === 'cab') l.src = 'assets/hero/img/cab-interior-portrait.webp';
+  }
+}

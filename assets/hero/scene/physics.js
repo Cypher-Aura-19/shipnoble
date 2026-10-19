@@ -9,7 +9,7 @@
 //
 // A bump is a short sequence of axle hits (front → drive axle → trailer axles), spaced by
 // wheelbase / speed, so it reads as a real truck rolling over a seam rather than one jolt.
-import { PHYSICS } from '../config.js?v=5';
+import { PHYSICS } from '../config.js?v=6';
 
 const spring = ({ k, c }) => ({ x: 0, v: 0, k, c });
 

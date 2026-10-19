@@ -4,8 +4,8 @@
 //   k       = z / (z - cam.z)
 //   screen  = C + ((p - C) + (layerShift - camShift) / z) * k
 // layerShift / camShift are in px at cab depth (z = 1), so nearer layers move more.
-import { CAMERA, DRIVE_DIRECTION, FRAME, GROUND, MAX_CAB_OFFSET, WINDOW } from '../config.js?v=5';
-import { NEAR, bakeWindowDim, createDust, heroView } from './shared.js?v=5';
+import { CAMERA, DRIVE_DIRECTION, FRAME, GROUND, MAX_CAB_OFFSET, WINDOW } from '../config.js?v=6';
+import { EDGE_RGB, NEAR, boxed, bakeWindowDim, createDust, heroView } from './shared.js?v=6';
 
 // Half-size copies of the ground texture, so distant rows sample a pre-filtered image
 // instead of shimmering.
@@ -148,6 +148,16 @@ export function createRenderer(canvas, layers, images) {
   function render(state) {
     Object.assign(view, heroView(view.w, view.h, state.camZ));
     ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.save();
+    const shown = boxed(view, view.w, view.h);
+    if (shown) {
+      // the frame is shown whole on a dark ground: the world is clipped to it
+      ctx.fillStyle = `rgb(${EDGE_RGB.join(',')})`;
+      ctx.fillRect(0, 0, view.w, view.h);
+      ctx.beginPath();
+      ctx.rect(view.ox, view.oy, FRAME.w * view.scale, FRAME.h * view.scale);
+      ctx.clip();
+    }
     ctx.fillStyle = skyColor; // anything above the hills photo reads as sky, never a black band
     ctx.fillRect(0, 0, view.w, view.h);
     ctx.setTransform(view.scale, 0, 0, view.scale, view.ox, view.oy);
@@ -229,6 +239,14 @@ export function createRenderer(canvas, layers, images) {
         ctx.drawImage(img, cx + (layer.x - cx + shiftX) * k, destY, destW, destH);
       }
       ctx.restore();
+    }
+    ctx.restore();
+    if (shown) {
+      const [r, g, b] = EDGE_RGB, ext = 0.16 * FRAME.h * (1 - view.grow) * view.scale, top = view.oy, bot = view.oy + FRAME.h * view.scale;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      const fade = (y0, y1) => { const gr = ctx.createLinearGradient(0, y0, 0, y1); gr.addColorStop(0, `rgba(${r},${g},${b},1)`); gr.addColorStop(0.45, `rgba(${r},${g},${b},0.6)`); gr.addColorStop(1, `rgba(${r},${g},${b},0)`); ctx.fillStyle = gr; ctx.fillRect(0, Math.min(y0, y1), view.w, ext); };
+      if (top > -1) fade(top, top + ext);
+      if (bot < view.h + 1) fade(bot, bot - ext);
     }
   }
 

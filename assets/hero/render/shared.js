@@ -4,7 +4,7 @@
 //   k       = z / (z − cam.z)
 //   screen  = C + ((p − C) + shift / z) · k
 // Shifts are in "focal px" (px at 1 m), so nearer layers move more.
-import { CAMERA, DRIVE_DIRECTION, DUST, FOCUS, FRAME, MAX_CAB_OFFSET, WINDOW } from '../config.js?v=5';
+import { CAMERA, DRIVE_DIRECTION, DUST, FOCUS, FRAME, MAX_CAB_OFFSET, WINDOW } from '../config.js?v=6';
 
 export const NEAR = 0.04;
 
@@ -104,14 +104,21 @@ export function coverView(canvasW, canvasH) {
   return { scale, ox: (canvasW - FRAME.w * scale) / 2, oy: (canvasH - FRAME.h * scale) / 2 };
 }
 
-// Portrait screens (phones, tablets held upright): the plain cover fit would show only the middle of the window, which reads
-// as a patch of hills. Instead the view is anchored on the window's right-hand corner, so the rounded glass edge and the cab
-// pillar frame the hills like they do on a desktop. As the camera nears the glass the view eases back to the centre.
+// Portrait screens: the frame is the portrait cab (config.js). Its window is fitted to the screen width with the frame hung from
+// just under the nav bar; whatever the frame does not reach (the lower door, on a tall phone) is the dark the copy sits on.
+// `grow` is 0 at rest and eases to 1 (the plain cover fit) as the camera nears the glass, so the move out through the window
+// still fills the screen.
+export const EDGE_RGB = [14, 15, 17];
 export function heroView(cw, ch, camZ = 0) {
   const cover = coverView(cw, ch);
-  if (cw >= ch) return cover;
-  const visW = cw / cover.scale;
-  const ox0 = cw - cover.scale * (WINDOW.x1 + 0.28 * visW);
-  const t = Math.min(1, Math.max(0, camZ / 0.2)), g = t * t * (3 - 2 * t);
-  return { scale: cover.scale, ox: Math.min(0, Math.max(cw - FRAME.w * cover.scale, ox0)) * (1 - g) + cover.ox * g, oy: cover.oy };
+  if (cw >= ch) return { ...cover, grow: 1 };
+  const winW = WINDOW.x1 - WINDOW.x0, wcx = (WINDOW.x0 + WINDOW.x1) / 2;
+  const fit = cw / (winW + 100);
+  const end = Math.max(fit, cover.scale);
+  const t = Math.min(1, Math.max(0, camZ / 0.2)), grow = t * t * (3 - 2 * t);
+  const fox = cw / 2 - wcx * fit, foy = Math.min(0, ch * 0.14 - WINDOW.y0 * fit);
+  const eox = (cw - FRAME.w * end) / 2, eoy = (ch - FRAME.h * end) / 2;
+  return { scale: fit + (end - fit) * grow, ox: fox + (eox - fox) * grow, oy: foy + (eoy - foy) * grow, grow };
 }
+// is any part of the screen outside the frame (the frame is shown whole)?
+export const boxed = (v, cw, ch) => v.ox > 0.5 || v.oy > 0.5 || v.ox + FRAME.w * v.scale < cw - 0.5 || v.oy + FRAME.h * v.scale < ch - 0.5;

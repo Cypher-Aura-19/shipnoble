@@ -1,8 +1,8 @@
 // WebGL2 renderer: every layer is one textured quad on the GPU, repeating layers use texture
 // wrapping (one draw however wide), and the ground plane is computed per pixel in a shader
 // with hardware mipmaps + anisotropic filtering. Same projection maths as the Canvas2D fallback.
-import { FRAME, GROUND, WINDOW } from '../config.js?v=5';
-import { bakeWindowDim, coverView, createDust, dustAt, groundParams, heroView, projectLayer, topColor } from './shared.js?v=5';
+import { FRAME, GROUND, WINDOW } from '../config.js?v=6';
+import { EDGE_RGB, bakeWindowDim, boxed, coverView, createDust, dustAt, groundParams, heroView, projectLayer, topColor } from './shared.js?v=6';
 
 const QUAD_VS = `#version 300 es
 in vec2 aPos;
@@ -136,6 +136,20 @@ function makeVignette() {
   return c;
 }
 
+// where the portrait frame ends inside the screen, the cab fades into the dark
+function makeEdgeFade() {
+  const c = new OffscreenCanvas(4, 256);
+  const g = c.getContext('2d');
+  const [r, gg, b] = EDGE_RGB;
+  const grad = g.createLinearGradient(0, 0, 0, 256);
+  grad.addColorStop(0, `rgba(${r},${gg},${b},1)`);
+  grad.addColorStop(0.45, `rgba(${r},${gg},${b},0.6)`);
+  grad.addColorStop(1, `rgba(${r},${gg},${b},0)`);
+  g.fillStyle = grad;
+  g.fillRect(0, 0, 4, 256);
+  return c;
+}
+
 function makeGlassSheen() {
   const c = new OffscreenCanvas(256, 256);
   const g = c.getContext('2d');
@@ -190,6 +204,7 @@ export function createGLRenderer(canvas, layers, images) {
   const dustTex = upload(gl, makeDustSprite());
   const glassTex = upload(gl, makeGlassSheen());
   const vignetteTex = upload(gl, makeVignette());
+  const edgeTex = upload(gl, makeEdgeFade());
   const dust = createDust();
 
   const view = { scale: 1, ox: 0, oy: 0, dpr: 1, w: 0, h: 0, quality: 1 };
@@ -236,8 +251,18 @@ export function createGLRenderer(canvas, layers, images) {
     const lift = state.pitchPx || 0;
     camZ0 = state.camZ;
     Object.assign(view, heroView(view.w, view.h, state.camZ));
-    gl.clearColor(sky[0], sky[1], sky[2], 1);
+    const shown = boxed(view, view.w, view.h);
+    gl.disable(gl.SCISSOR_TEST);
+    const bg = shown ? EDGE_RGB.map((v) => v / 255) : sky;
+    gl.clearColor(bg[0], bg[1], bg[2], 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
+    if (shown) {
+      // the world is clipped to the frame; the dark around it is the clear colour
+      const x0 = Math.max(0, Math.floor(view.ox)), x1 = Math.min(view.w, Math.ceil(view.ox + FRAME.w * view.scale));
+      const y0 = Math.max(0, Math.floor(view.oy)), y1 = Math.min(view.h, Math.ceil(view.oy + FRAME.h * view.scale));
+      gl.enable(gl.SCISSOR_TEST);
+      gl.scissor(x0, view.h - y1, Math.max(0, x1 - x0), Math.max(0, y1 - y0));
+    }
 
     // Visible frame rect (+ margin so tilted quads never show an edge).
     const m = 220;
@@ -322,6 +347,13 @@ export function createGLRenderer(canvas, layers, images) {
     const sx0 = -view.ox / view.scale;
     const sy0 = -view.oy / view.scale;
     drawQuad(vignetteTex, [sx0, sy0, sx0 + view.w / view.scale, sy0 + view.h / view.scale], [0, 0, 1, 1], 0, [1, 1, 1, 1]);
+    if (shown) {
+      // the frame's own top and bottom edges melt into the dark that surrounds it
+      const ext = 0.16 * FRAME.h * (1 - view.grow), xa = sx0, xb = sx0 + view.w / view.scale;
+      if (view.oy > -1) drawQuad(edgeTex, [xa, 0, xb, ext], [0, 0, 1, 1], 0, [1, 1, 1, 1]);
+      if (view.oy + FRAME.h * view.scale < view.h + 1) drawQuad(edgeTex, [xa, FRAME.h - ext, xb, FRAME.h], [0, 1, 1, 0], 0, [1, 1, 1, 1]);
+    }
+    gl.disable(gl.SCISSOR_TEST);
   }
 
   resize();
