@@ -291,6 +291,8 @@ if (air) fetch('assets/story.json').then((r) => r.json()).then(async (JJ) => {
     const t = `translate3d(${x}px, ${y}px, 0) scale(${z})`;
     const ut = [unitCss(unit.t, sc0, ox, oy, vb), unitCss(unit.r, sc0, ox, oy, vb)];
     if (t !== camT) {
+      // the layers are rastered once and scaled by the GPU: after a zoom in, let the browser draw them again at the new size so the truck stays sharp
+      if (z > 1.001 && z !== camZ) { clearTimeout(camTimer); camTimer = setTimeout(() => { svgs.forEach((el) => { el.style.willChange = 'auto'; }); requestAnimationFrame(() => svgs.forEach((el) => { el.style.willChange = 'transform'; })); }, 180); }
       camT = t; camZ = z; svg.style.transform = t; LS.style.transform = t; unitT = ['', ''];
     }
     if (ut[0] !== unitT[0]) { unitT[0] = ut[0]; LT.style.transform = t + ut[0]; }
@@ -413,7 +415,10 @@ if (air) fetch('assets/story.json').then((r) => r.json()).then(async (JJ) => {
     const vb = svg.viewBox.baseVal, sc = Math.max(stage.clientWidth / vb.width, stage.clientHeight / vb.height);
     // on a phone the copy is stacked above and below the road, so the truck settles in the clear band between the two panels
     const band = stackedBand();
-    const zEnd = band ? Math.min(1, band.h / (F.len * k * sc)) : Math.min(1, (stage.clientHeight / sc) / (F.len * k * 1.32)), z = lerp(1, zEnd, smooth(range(s, 3.7, 4.8)));
+    // upright screens (tablets, phones) bring the camera in on the truck so it stays as long on the road as it was side-on;
+    // a landscape screen only ever pulls back to keep the whole truck in view
+    const upright = stage.clientWidth < stage.clientHeight;
+    const zEnd = band ? Math.min(1.5, band.h / (F.len * k * sc)) : upright ? Math.min(1.5, (stage.clientHeight * 0.8) / (F.len * k * sc), Math.max(40, Math.min(stage.clientWidth / 2 - (panelTop.offsetLeft + panelTop.offsetWidth), panelBot.offsetLeft - stage.clientWidth / 2) - 8) / (F.RH * k * sc)) : Math.min(1, (stage.clientHeight / sc) / (F.len * k * 1.32)), z = lerp(1, zEnd, smooth(range(s, 3.7, 4.8)));
     const bandDy = band ? (band.mid - stage.clientHeight / 2) * smooth(range(s, 3.7, 4.8)) : 0;
     {
       const W = stage.clientWidth, Hh = stage.clientHeight, zz = Math.round(z * 2000) / 2000;

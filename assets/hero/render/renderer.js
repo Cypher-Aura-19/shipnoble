@@ -4,8 +4,8 @@
 //   k       = z / (z - cam.z)
 //   screen  = C + ((p - C) + (layerShift - camShift) / z) * k
 // layerShift / camShift are in px at cab depth (z = 1), so nearer layers move more.
-import { CAMERA, DRIVE_DIRECTION, FRAME, GROUND, MAX_CAB_OFFSET, WINDOW } from '../config.js?v=2';
-import { NEAR, bakeWindowDim, createDust } from './shared.js?v=2';
+import { CAMERA, DRIVE_DIRECTION, FRAME, GROUND, MAX_CAB_OFFSET, WINDOW } from '../config.js?v=4';
+import { EDGE_RGB, NEAR, bakeWindowDim, createDust, heroView } from './shared.js?v=4';
 
 // Half-size copies of the ground texture, so distant rows sample a pre-filtered image
 // instead of shimmering.
@@ -34,15 +34,7 @@ export function createRenderer(canvas, layers, images) {
     canvas.height = Math.round(h * dpr);
     canvas.style.width = `${w}px`;
     canvas.style.height = `${h}px`;
-    const scale = Math.max(w / FRAME.w, h / FRAME.h) * dpr; // cover fit
-    Object.assign(view, {
-      dpr,
-      w: canvas.width,
-      h: canvas.height,
-      scale,
-      ox: (canvas.width - FRAME.w * scale) / 2,
-      oy: (canvas.height - FRAME.h * scale) / 2,
-    });
+    Object.assign(view, { dpr, w: canvas.width, h: canvas.height }, heroView(canvas.width, canvas.height, 0));
   }
 
   // Visible frame-space rectangle (frame coords that land on the canvas).
@@ -154,7 +146,17 @@ export function createRenderer(canvas, layers, images) {
 
   // state: { camZ, camShiftY, dist, glassAlpha, rig offsets, cabRollDeg }
   function render(state) {
+    Object.assign(view, heroView(view.w, view.h, state.camZ));
     ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.save();
+    // a portrait screen shows the whole frame on a dark ground until it grows to fill the screen
+    if (view.grow < 0.999) {
+      ctx.fillStyle = `rgb(${EDGE_RGB.join(',')})`;
+      ctx.fillRect(0, 0, view.w, view.h);
+      ctx.beginPath();
+      ctx.rect(view.ox, view.oy, FRAME.w * view.scale, FRAME.h * view.scale);
+      ctx.clip();
+    }
     ctx.fillStyle = skyColor; // anything above the hills photo reads as sky, never a black band
     ctx.fillRect(0, 0, view.w, view.h);
     ctx.setTransform(view.scale, 0, 0, view.scale, view.ox, view.oy);
@@ -236,6 +238,13 @@ export function createRenderer(canvas, layers, images) {
         ctx.drawImage(img, cx + (layer.x - cx + shiftX) * k, destY, destW, destH);
       }
       ctx.restore();
+    }
+    ctx.restore();
+    if (view.grow < 0.999) {
+      const [r, g, b] = EDGE_RGB, ext = 0.3 * (1 - view.grow) * FRAME.h * view.scale, top = view.oy, bot = view.oy + FRAME.h * view.scale;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      const fade = (y0, y1) => { const gr = ctx.createLinearGradient(0, y0, 0, y1); gr.addColorStop(0, `rgba(${r},${g},${b},1)`); gr.addColorStop(0.45, `rgba(${r},${g},${b},0.6)`); gr.addColorStop(1, `rgba(${r},${g},${b},0)`); ctx.fillStyle = gr; ctx.fillRect(0, Math.min(y0, y1), view.w, ext); };
+      fade(top, top + ext); fade(bot, bot - ext);
     }
   }
 
