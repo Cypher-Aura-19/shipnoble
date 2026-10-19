@@ -4,7 +4,7 @@
 //   k       = z / (z − cam.z)
 //   screen  = C + ((p − C) + shift / z) · k
 // Shifts are in "focal px" (px at 1 m), so nearer layers move more.
-import { CAMERA, DRIVE_DIRECTION, DUST, FOCUS, FRAME, MAX_CAB_OFFSET, WINDOW } from '../config.js?v=4';
+import { CAMERA, DRIVE_DIRECTION, DUST, FOCUS, FRAME, MAX_CAB_OFFSET, WINDOW } from '../config.js?v=5';
 
 export const NEAR = 0.04;
 
@@ -104,23 +104,14 @@ export function coverView(canvasW, canvasH) {
   return { scale, ox: (canvasW - FRAME.w * scale) / 2, oy: (canvasH - FRAME.h * scale) / 2 };
 }
 
-// Portrait screens (phones, tablets held upright): the cover fit would crop the window to a sliver of the hills.
-// Instead the whole window is fitted to the width, set a little above the middle, with the cab fading into the dark
-// above and below. `grow` is 0 at rest and eases to 1 (the plain cover fit) as the camera nears the glass, so the
-// move out through the window still fills the screen.
-export const EDGE_RGB = [14, 15, 17];
+// Portrait screens (phones, tablets held upright): the plain cover fit would show only the middle of the window, which reads
+// as a patch of hills. Instead the view is anchored on the window's right-hand corner, so the rounded glass edge and the cab
+// pillar frame the hills like they do on a desktop. As the camera nears the glass the view eases back to the centre.
 export function heroView(cw, ch, camZ = 0) {
   const cover = coverView(cw, ch);
-  if (cw >= ch) return { ...cover, grow: 1 };
-  const winW = WINDOW.x1 - WINDOW.x0;
-  const wcx = (WINDOW.x0 + WINDOW.x1) / 2, wcy = (WINDOW.y0 + WINDOW.y1) / 2;
-  const fit = Math.min(cover.scale, cw / (winW * 1.04));
-  const t = Math.min(1, Math.max(0, camZ / 0.14)), grow = t * t * (3 - 2 * t);
-  const fox = cw / 2 - wcx * fit, foy = ch * 0.38 - wcy * fit;
-  return {
-    scale: fit + (cover.scale - fit) * grow,
-    ox: fox + (cover.ox - fox) * grow,
-    oy: foy + (cover.oy - foy) * grow,
-    grow,
-  };
+  if (cw >= ch) return cover;
+  const visW = cw / cover.scale;
+  const ox0 = cw - cover.scale * (WINDOW.x1 + 0.28 * visW);
+  const t = Math.min(1, Math.max(0, camZ / 0.2)), g = t * t * (3 - 2 * t);
+  return { scale: cover.scale, ox: Math.min(0, Math.max(cw - FRAME.w * cover.scale, ox0)) * (1 - g) + cover.ox * g, oy: cover.oy };
 }

@@ -2,8 +2,8 @@
 // camera/scene state the renderer draws.
 // GSAP comes from the page (window.gsap), shared with the rest of the site
 const { gsap, ScrollTrigger } = window;
-import { CAMERA, MOTION, PHYSICS, TIMELINE } from '../config.js?v=4';
-import { bump, createRig, stepRig, thud } from './physics.js?v=4';
+import { CAMERA, MOTION, PHYSICS, TIMELINE } from '../config.js?v=5';
+import { bump, createRig, stepRig, thud } from './physics.js?v=5';
 
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 const range = (v, a, b) => clamp01((v - a) / (b - a));

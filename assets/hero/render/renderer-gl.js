@@ -1,8 +1,8 @@
 // WebGL2 renderer: every layer is one textured quad on the GPU, repeating layers use texture
 // wrapping (one draw however wide), and the ground plane is computed per pixel in a shader
 // with hardware mipmaps + anisotropic filtering. Same projection maths as the Canvas2D fallback.
-import { FRAME, GROUND, WINDOW } from '../config.js?v=4';
-import { EDGE_RGB, bakeWindowDim, coverView, createDust, dustAt, groundParams, heroView, projectLayer, topColor } from './shared.js?v=4';
+import { FRAME, GROUND, WINDOW } from '../config.js?v=5';
+import { bakeWindowDim, coverView, createDust, dustAt, groundParams, heroView, projectLayer, topColor } from './shared.js?v=5';
 
 const QUAD_VS = `#version 300 es
 in vec2 aPos;
@@ -136,20 +136,6 @@ function makeVignette() {
   return c;
 }
 
-// the cab fades into the dark at the top and bottom edge of the frame when it is shown whole (portrait screens)
-function makeEdgeFade() {
-  const c = new OffscreenCanvas(4, 256);
-  const g = c.getContext('2d');
-  const [r, gg, b] = EDGE_RGB;
-  const grad = g.createLinearGradient(0, 0, 0, 256);
-  grad.addColorStop(0, `rgba(${r},${gg},${b},1)`);
-  grad.addColorStop(0.45, `rgba(${r},${gg},${b},0.6)`);
-  grad.addColorStop(1, `rgba(${r},${gg},${b},0)`);
-  g.fillStyle = grad;
-  g.fillRect(0, 0, 4, 256);
-  return c;
-}
-
 function makeGlassSheen() {
   const c = new OffscreenCanvas(256, 256);
   const g = c.getContext('2d');
@@ -204,10 +190,9 @@ export function createGLRenderer(canvas, layers, images) {
   const dustTex = upload(gl, makeDustSprite());
   const glassTex = upload(gl, makeGlassSheen());
   const vignetteTex = upload(gl, makeVignette());
-  const edgeTex = upload(gl, makeEdgeFade());
   const dust = createDust();
 
-  const view = { scale: 1, ox: 0, oy: 0, dpr: 1, w: 0, h: 0, quality: 1, grow: 1 };
+  const view = { scale: 1, ox: 0, oy: 0, dpr: 1, w: 0, h: 0, quality: 1 };
   let camZ0 = 0;
 
   function resize() {
@@ -251,17 +236,8 @@ export function createGLRenderer(canvas, layers, images) {
     const lift = state.pitchPx || 0;
     camZ0 = state.camZ;
     Object.assign(view, heroView(view.w, view.h, state.camZ));
-    // a portrait screen shows the whole frame on a dark ground: the world is clipped to the frame until it grows to fill the screen
-    const bg = view.grow < 0.999 ? EDGE_RGB.map((v) => v / 255) : sky;
-    gl.disable(gl.SCISSOR_TEST);
-    gl.clearColor(bg[0], bg[1], bg[2], 1);
+    gl.clearColor(sky[0], sky[1], sky[2], 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    if (view.grow < 0.999) {
-      const x0 = Math.max(0, Math.floor(view.ox)), x1 = Math.min(view.w, Math.ceil(view.ox + FRAME.w * view.scale));
-      const y0 = Math.max(0, Math.floor(view.oy)), y1 = Math.min(view.h, Math.ceil(view.oy + FRAME.h * view.scale));
-      gl.enable(gl.SCISSOR_TEST);
-      gl.scissor(x0, view.h - y1, Math.max(0, x1 - x0), Math.max(0, y1 - y0));
-    }
 
     // Visible frame rect (+ margin so tilted quads never show an edge).
     const m = 220;
@@ -346,12 +322,6 @@ export function createGLRenderer(canvas, layers, images) {
     const sx0 = -view.ox / view.scale;
     const sy0 = -view.oy / view.scale;
     drawQuad(vignetteTex, [sx0, sy0, sx0 + view.w / view.scale, sy0 + view.h / view.scale], [0, 0, 1, 1], 0, [1, 1, 1, 1]);
-    if (view.grow < 0.999) {
-      const ext = 0.3 * (1 - view.grow) * FRAME.h;
-      drawQuad(edgeTex, [sx0, 0, sx0 + view.w / view.scale, ext], [0, 0, 1, 1], 0, [1, 1, 1, 1]);
-      drawQuad(edgeTex, [sx0, FRAME.h - ext, sx0 + view.w / view.scale, FRAME.h], [0, 1, 1, 0], 0, [1, 1, 1, 1]);
-    }
-    gl.disable(gl.SCISSOR_TEST);
   }
 
   resize();

@@ -1,9 +1,9 @@
 // Home hero: the freight-journey scene (inside the cab → out through the window → the hills fade into the page).
 // Ported from cargo/freight-journey/web. It runs on the site's own GSAP, ScrollTrigger and Lenis (site.js).
-import { LAYERS, TIMELINE } from './config.js?v=4';
-import { createRenderer } from './render/renderer.js?v=4';
-import { createGLRenderer } from './render/renderer-gl.js?v=4';
-import { createJourney } from './scene/journey.js?v=4';
+import { LAYERS, TIMELINE } from './config.js?v=5';
+import { createRenderer } from './render/renderer.js?v=5';
+import { createGLRenderer } from './render/renderer-gl.js?v=5';
+import { createJourney } from './scene/journey.js?v=5';
 
 const { gsap } = window;
 const journeyEl = document.querySelector('[data-journey]');
