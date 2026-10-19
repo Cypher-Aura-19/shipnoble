@@ -411,12 +411,15 @@ if (air) fetch('assets/story.json').then((r) => r.json()).then(async (JJ) => {
     const c = [c0[0] + Math.cos(P.th) * look, c0[1] + Math.sin(P.th) * look];
     // once the truck turns upright the camera pulls back just enough to keep the whole of it, with margin, on any screen
     const vb = svg.viewBox.baseVal, sc = Math.max(stage.clientWidth / vb.width, stage.clientHeight / vb.height);
-    const zEnd = Math.min(1, (stage.clientHeight / sc) / (F.len * k * 1.32)), z = lerp(1, zEnd, smooth(range(s, 3.7, 4.8)));
+    // on a phone the copy is stacked above and below the road, so the truck settles in the clear band between the two panels
+    const band = stackedBand();
+    const zEnd = band ? Math.min(1, band.h / (F.len * k * sc)) : Math.min(1, (stage.clientHeight / sc) / (F.len * k * 1.32)), z = lerp(1, zEnd, smooth(range(s, 3.7, 4.8)));
+    const bandDy = band ? (band.mid - stage.clientHeight / 2) * smooth(range(s, 3.7, 4.8)) : 0;
     {
       const W = stage.clientWidth, Hh = stage.clientHeight, zz = Math.round(z * 2000) / 2000;
       const ox = (W - vb.width * sc) / 2, oy = (Hh - vb.height * sc) / 2;
       const Tx = -800 - (c[0] - 82.75) * k, Ty = -450 - (c[1] - LANE) * F.ay;
-      const bx = sc * (800 + zz * Tx) - sc * vb.x + ox + zz * sc * vb.x - zz * ox, by = sc * (450 + zz * Ty) - sc * vb.y + oy + zz * sc * vb.y - zz * oy;
+      const bx = sc * (800 + zz * Tx) - sc * vb.x + ox + zz * sc * vb.x - zz * ox, by = sc * (450 + zz * Ty) - sc * vb.y + oy + zz * sc * vb.y - zz * oy + bandDy;
       var camArgs = [Math.round(bx), Math.round(by), zz, sc, ox, oy, vb];
     }
     const a0 = S(...A0), k0 = S(F.king, LANE), a1 = S(...P.a), k1 = S(...P.K);
@@ -452,6 +455,19 @@ if (air) fetch('assets/story.json').then((r) => r.json()).then(async (JJ) => {
     });
   }
 
+  // the clear band between the stacked copy panels on a phone: the truck is fitted inside it, never under the text
+  const STACK = matchMedia('(max-width: 767px)'), panelTop = air.querySelector('.sa-panel--l'), panelBot = air.querySelector('.sa-panel--r');
+  let bandKey = '', bandVal = null;
+  const stackedBand = () => {
+    if (!STACK.matches) return null;
+    const H = stage.clientHeight, key = H + ':' + panelTop.offsetHeight + ':' + panelBot.offsetHeight + ':' + stage.clientWidth;
+    if (key !== bandKey) {
+      bandKey = key;
+      const gap = 14, t = panelTop.offsetTop + panelTop.offsetHeight + gap, b = panelBot.offsetTop - gap;
+      bandVal = { h: Math.max(120, (b - t) * 0.96), mid: (t + b) / 2 };
+    }
+    return bandVal;
+  };
   const f = follower((p) => render(p * TOTAL));
   sizeCanvas(); load();
   render(RM ? TOTAL : 0);

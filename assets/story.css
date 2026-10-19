@@ -202,6 +202,11 @@
   .sa-panel--r .sa-list i{margin:0}
 }
 
+/* short phones: drop the blurb so the truck keeps a clear band between the panels */
+@media (max-width:767px) and (max-height:700px){
+  .sa-panel--l .sa-text{display:none}
+}
+
 /* chapter 4: the grid and travelling light either side of the road */
 .sa-fx{position:absolute;top:0;bottom:0;pointer-events:none;opacity:0;visibility:hidden}
 .sa-fx--l{left:0;right:calc(50% + var(--road-half,220px) + 1rem)}
